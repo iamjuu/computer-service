@@ -1,10 +1,38 @@
 import React from "react";
 import Navbar from "../../components/navbar";
-import { mainImage, Compterimage } from "../../assets";
+import { mainImage, Compterimage, NonIt } from "../../assets";
+import LeftRadiusCard from "../../components/leftRadiusCard";
+import RightRadiusCard from "../../components/rightRaduisCard";
 
+const leftData = [
+  {
+    img: NonIt,
+    description:
+      "We specialize in delivering high-quality computer hardware and networking solutions for businesses, homes, and institutions.We specialize in delivering high-quality computer hardware and networking solutions for businesses, homes, and institutionsWe specialize in delivering high-quality computer hardware and networking solutions for businesses, homes, and institutions",
+  },
+  {
+    img: NonIt,
+    description:
+      "We specialize in delivering high-quality computer hardware and networking solutions for businesses, homes, and institutions.We specialize in delivering high-quality computer hardware and networking solutions for businesses, homes, and institutionsWe specialize in delivering high-quality computer hardware and networking solutions for businesses, homes, and institutions",
+  },
+
+];
+const rightData = [
+  {
+    img: NonIt,
+    description:
+      "We specialize in delivering high-quality computer hardware and networking solutions for businesses, homes, and institutions.We specialize in delivering high-quality computer hardware and networking solutions for businesses, homes, and institutionsWe specialize in delivering high-quality computer hardware and networking solutions for businesses, homes, and institutions",
+  },
+  {
+    img: NonIt,
+    description:
+      "We specialize in delivering high-quality computer hardware and networking solutions for businesses, homes, and institutions.We specialize in delivering high-quality computer hardware and networking solutions for businesses, homes, and institutionsWe specialize in delivering high-quality computer hardware and networking solutions for businesses, homes, and institutions",
+  },
+ 
+];
 const Index = () => {
   return (
-    <div className="min-h-screen">
+    <div className="">
       <Navbar />
 
       <div className="w-full py-16  flex justify-center items-center">
@@ -58,16 +86,42 @@ const Index = () => {
           <div className="bg-[#EDF7FF] p-5 w-full mt-10  h-[200px] flex justify-center  gap-5 rounded-full">
             <div className="w-[30%]    rounded-l-full bg-white flex justify-center items-center">
               <h1 className="text-2xl   text-[#0048FF] font-bold">
-                About  <br /> Company
+                About <br /> Company
               </h1>
             </div>
             <div className="w-[70%] flex justify-center items-center">
-              <p className="text-gray-600 leading-8 " >
+              <p className="text-gray-600 leading-8 ">
                 We specialize in delivering high-quality computer hardware and
                 networking solutions for businesses, homes, and institutions.
                 From device setup and configuration, we ensure speed, security,
                 and seamless connectivity in every project.
               </p>
+            </div>
+          </div>
+
+          <h1 className="text-3xl font-bold tex text-center mb-10 mt-10">
+            {" "}
+            our services
+          </h1>
+          <div className="flex flex-col gap-10">
+            {" "}
+            <div>
+              {leftData.map((item, index) => (
+                <LeftRadiusCard
+                  key={index}
+                  img={item.img}
+                  description={item.description}
+                />
+              ))}
+            </div>
+            <div>
+              {rightData.map((item, index) => (
+                <RightRadiusCard
+                  key={index}
+                  img={item.img}
+                  description={item.description}
+                />
+              ))}
             </div>
           </div>
         </div>
