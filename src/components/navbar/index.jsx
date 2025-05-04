@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { LOgo } from "../../assets";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -9,10 +9,13 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className={`w-full bg-[#F9F9F9] flex justify-center items-center transform transition-all duration-500 ease-in-out ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
-      <div className="max-w-[1300px] w-full px-4 sm:px-6 lg:px-10 py-4">
-        <div className="flex justify-between items-center">
-          <div className="text-xl font-bold">Logo</div>
+    <div className={`w-full  flex justify-center items-center transform transition-all duration-500 ease-in-out ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
+      <div className="max-w-[1300px] w-full ">
+        <div className="flex justify-between   items-center">
+          <div className="">
+
+            <img src={LOgo} alt="logo" className="w-[80px] " />
+          </div>
           
           {/* Mobile menu button */}
           <button 
@@ -56,7 +59,7 @@ const Navbar = () => {
 
         {/* Mobile Navigation */}
         <div className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${isMenuOpen ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'}`}>
-          <ul className="flex flex-col gap-4 mt-4">
+          <ul className="flex flex-col pl-10 gap-4 mt-4">
             {['Home', 'About', 'Our Services', 'Contact'].map((item, index) => (
               <li 
                 key={item}

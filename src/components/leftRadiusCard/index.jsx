@@ -7,8 +7,8 @@ const LeftRadiusCard = ({img,description}) => {
   <img className='w-56' src={img} alt="" />
  
  </div>
- <div className='w-[70%]'>
- <p>
+ <div className='w-[70%] '>
+ <p >
   {description}
   </p>
  </div>

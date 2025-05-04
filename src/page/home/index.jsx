@@ -15,7 +15,6 @@ const leftData = [
     description:
       "We specialize in delivering high-quality computer hardware and networking solutions for businesses, homes, and institutions.We specialize in delivering high-quality computer hardware and networking solutions for businesses, homes, and institutionsWe specialize in delivering high-quality computer hardware and networking solutions for businesses, homes, and institutions",
   },
-
 ];
 const rightData = [
   {
@@ -28,7 +27,6 @@ const rightData = [
     description:
       "We specialize in delivering high-quality computer hardware and networking solutions for businesses, homes, and institutions.We specialize in delivering high-quality computer hardware and networking solutions for businesses, homes, and institutionsWe specialize in delivering high-quality computer hardware and networking solutions for businesses, homes, and institutions",
   },
- 
 ];
 const Index = () => {
   return (
@@ -105,7 +103,7 @@ const Index = () => {
           </h1>
           <div className="flex flex-col gap-10">
             {" "}
-            <div>
+            <div className="flex flex-col gap-10">
               {leftData.map((item, index) => (
                 <LeftRadiusCard
                   key={index}
@@ -114,7 +112,7 @@ const Index = () => {
                 />
               ))}
             </div>
-            <div>
+            <div className="flex flex-col gap-10">
               {rightData.map((item, index) => (
                 <RightRadiusCard
                   key={index}
@@ -123,6 +121,10 @@ const Index = () => {
                 />
               ))}
             </div>
+          </div>
+
+          <div>
+             serices
           </div>
         </div>
       </div>
