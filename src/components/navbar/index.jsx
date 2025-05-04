@@ -8,12 +8,19 @@ const Navbar = () => {
     setIsVisible(true);
   }, []);
 
+  const scrollToSection = (sectionId) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMenuOpen(false); // Close mobile menu after clicking
+  };
+
   return (
     <div className={`w-full  flex justify-center items-center transform transition-all duration-500 ease-in-out ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
       <div className="max-w-[1300px] w-full ">
         <div className="flex justify-between   items-center">
           <div className="">
-
             <img src={LOgo} alt="logo" className="w-[80px] " />
           </div>
           
@@ -43,6 +50,11 @@ const Navbar = () => {
                   key={item}
                   className={`text-[16px] hover:text-gray-600 cursor-pointer transform transition-all duration-300 hover:-translate-y-1 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
                   style={{ transitionDelay: `${index * 100}ms` }}
+                  onClick={() => {
+                    if (item === 'About') scrollToSection('about');
+                    else if (item === 'Our Services') scrollToSection('services');
+                    else if (item === 'Contact') scrollToSection('contact');
+                  }}
                 >
                   {item}
                 </li>
@@ -51,7 +63,7 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:block">
-            <button className="px-4 py-2 border border-[#FFC1DC] rounded-full text-black  hover:bg-[#FFC1DC] transform transition-all duration-300 hover:scale-105 hover:-translate-y-1">
+            <button className="px-4 py-2 border border-blue-500 rounded-full text-black  hover:bg-blue-500  hover:text-white transform transition-all duration-300 hover:scale-105 hover:-translate-y-1">
               Follow Us
             </button>
           </div>
@@ -65,6 +77,11 @@ const Navbar = () => {
                 key={item}
                 className="text-[16px] hover:text-gray-600 cursor-pointer transform transition-all duration-300 hover:-translate-x-2"
                 style={{ transitionDelay: `${index * 100}ms` }}
+                onClick={() => {
+                  if (item === 'About') scrollToSection('about');
+                  else if (item === 'Our Services') scrollToSection('services');
+                  else if (item === 'Contact') scrollToSection('contact');
+                }}
               >
                 {item}
               </li>
