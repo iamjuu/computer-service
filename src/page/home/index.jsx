@@ -80,7 +80,7 @@ const Index = () => {
                 </span>
               </h1>
 
-              <p className="text-gray-600 text-sm sm:text-base">
+              <p className="text-gray-600   text-sm  md:text-[20px]">
                 We specialize in delivering high-quality computer hardware and
                 networking solutions for businesses, homes, and institutions.
                 From device setup and configuration, we ensure speed, security,

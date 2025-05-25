@@ -18,7 +18,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className={`w-full flex justify-center items-center transform transition-all duration-500 ease-in-out ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
+    <div className={`w-full flex justify-center  items-center transform transition-all duration-500 ease-in-out ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
       <div className="max-w-[1300px] w-full">
         <div className="flex justify-between items-center">
           {/* Logo */}
@@ -55,14 +55,17 @@ const Navbar = () => {
 
           {/* Follow Button */}
           <div className="hidden px-3 md:block">
+            <a href="https://wa.me/916235227964" target="_blank" rel="noopener noreferrer">
             <button className="px-4 py-2 border border-blue-500 rounded-full text-black hover:bg-blue-500 hover:text-white transform transition-all duration-300 hover:scale-105 hover:-translate-y-1">
-              Follow Us
+              Connect Us
             </button>
+            </a>
           </div>
 
           {/* Mobile menu button */}
+          <div className="px-3">
           <button 
-            className="md:hidden transition-transform duration-300 ease-in-out"
+            className="md:hidden  transition-transform duration-300 ease-in-out"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             <svg className={`w-6 h-6 transform transition-transform duration-300 ${isMenuOpen ? 'rotate-90' : 'rotate-0'}`} 
@@ -77,6 +80,7 @@ const Navbar = () => {
               )}
             </svg>
           </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
@@ -97,9 +101,11 @@ const Navbar = () => {
               </li>
             ))}
             <li>
+              <a href="https://wa.me/916235227964" target="_blank" rel="noopener noreferrer">
               <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transform transition-all duration-300 hover:scale-105">
                 Follow Us
               </button>
+              </a>
             </li>
           </ul>
         </div>
