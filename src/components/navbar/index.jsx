@@ -55,9 +55,11 @@ const Navbar = () => {
 
           {/* Follow Button */}
           <div className="hidden px-3 md:block">
+            <a href="https://wa.me/916235227964" target="_blank" rel="noopener noreferrer">
             <button className="px-4 py-2 border border-blue-500 rounded-full text-black hover:bg-blue-500 hover:text-white transform transition-all duration-300 hover:scale-105 hover:-translate-y-1">
-              Follow Us
+              Connect Us
             </button>
+            </a>
           </div>
 
           {/* Mobile menu button */}
@@ -97,9 +99,11 @@ const Navbar = () => {
               </li>
             ))}
             <li>
+              <a href="https://wa.me/916235227964" target="_blank" rel="noopener noreferrer">
               <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transform transition-all duration-300 hover:scale-105">
                 Follow Us
               </button>
+              </a>
             </li>
           </ul>
         </div>
