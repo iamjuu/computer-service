@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../../components/navbar";
 import { mainImage, Compterimage, NonIt } from "../../assets";
 import LeftRadiusCard from "../../components/leftRadiusCard";
@@ -6,6 +6,9 @@ import RightRadiusCard from "../../components/rightRaduisCard";
 import ContactForm from "../../components/contactform";
 import Footer from "../../components/footer";
 import { software, Techfix1, Techfix2,Gaming } from "../../assets";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
 const leftData = [
 
   {
@@ -55,6 +58,13 @@ const rightData = [
   },
 ];
 const Index = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
+
   const scrollToServices = () => {
     const servicesSection = document.getElementById("services");
     if (servicesSection) {
@@ -69,7 +79,7 @@ const Index = () => {
         <div className="w-full max-w-[1300px] px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             {/* Left content */}
-            <div className="w-full md:w-1/2 space-y-4 md:space-y-6">
+            <div className="w-full md:w-1/2 space-y-4 md:space-y-6" data-aos="fade-up">
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
                 <span className="font-normal text-blue-600">
                   Providing Reliable Hardware{" "}
@@ -108,7 +118,7 @@ const Index = () => {
             </div>
 
             {/* Right content - Illustration */}
-            <div className="w-full md:w-1/2 flex justify-center items-center mt-6 md:mt-0">
+            <div className="w-full md:w-1/2 flex justify-center items-center mt-6 md:mt-0" data-aos="fade-down">
               <img
                 className="w-full max-w-md"
                 src={Compterimage}
@@ -118,8 +128,8 @@ const Index = () => {
           </div>
 
           {/* About Company section with responsive fixes */}
-          <div className="bg-[#EDF7FF] p-3 sm:p-5 w-full mt-8 md:mt-10 flex flex-col sm:flex-row justify-center gap-3 sm:gap-5 rounded-3xl sm:rounded-full">
-            <div className="w-full sm:w-[30%] py-4 rounded-2xl sm:rounded-l-full bg-white flex justify-center items-center">
+          <div className="bg-[#EDF7FF] p-3 sm:p-5 w-full mt-8 md:mt-10 flex flex-col sm:flex-row justify-center gap-3 sm:gap-5 rounded-3xl sm:rounded-full" data-aos="fade-up">
+            <div className="w-full sm:w-[30%] py-4 rounded-2xl sm:rounded-l-full bg-white flex justify-center items-center" data-aos="fade-down">
               <h1
                 id="about"
                 className="text-xl sm:text-2xl text-[#0048FF] font-bold text-center"
@@ -127,8 +137,8 @@ const Index = () => {
                 About <br /> Company
               </h1>
             </div>
-            <div className="w-full sm:w-[70%] flex justify-center   items-center p-4 sm:py-0">
-              <p className="text-gray-600 text-[18px]     p-4">
+            <div className="w-full sm:w-[70%] flex justify-center items-center p-4 sm:py-0" data-aos="fade-up">
+              <p className="text-gray-600 text-[18px] p-4">
                 I offer custom computer builds, high-performance gaming PC
                 setups, and reliable computer repair services, all from the
                 comfort of my home. Whether you need a powerful workstation, a
@@ -144,41 +154,46 @@ const Index = () => {
           <h1
             id="services"
             className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-10 mt-8 sm:mt-10"
+            data-aos="fade-down"
           >
             Our Services
           </h1>
           {/* Services section with responsive design */}
-<div className="flex flex-col gap-6 sm:gap-10">
           <div className="flex flex-col gap-6 sm:gap-10">
+            <div className="flex flex-col gap-6 sm:gap-10">
               {rightData.map((item, index) => (
                 <RightRadiusCard
                   header={item.header}
                   key={index}
                   img={item.img}
                   listPoints={item.listPoints}
+                  data-aos="fade-up"
                 />
               ))}
             </div>
-          <div className="flex flex-col gap-6 sm:gap-10">
-            {leftData.map((item, index) => (
-              <LeftRadiusCard
-                header={item.header}
-                key={index}
-                img={item.img}
-                listPoints={item.listPoints}
-              />
-            ))}
-           
+            <div className="flex flex-col gap-6 sm:gap-10">
+              {leftData.map((item, index) => (
+                <LeftRadiusCard
+                  header={item.header}
+                  key={index}
+                  img={item.img}
+                  listPoints={item.listPoints}
+                  data-aos="fade-down"
+                />
+              ))}
+            </div>
           </div>
-          </div>
-          <div className="mt-8 w-full flex justify-center   flex-col sm:mt-10">
+          <div className="mt-8 w-full flex justify-center flex-col sm:mt-10" data-aos="fade-up">
             <h1
               id="contact"
               className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-10 mt-8 sm:mt-10"
+              data-aos="fade-down"
             >
               Contact Us
-            </h1>{" "}
-            <ContactForm />
+            </h1>
+            <div data-aos="fade-up">
+              <ContactForm />
+            </div>
           </div>
         </div>
       </div>
