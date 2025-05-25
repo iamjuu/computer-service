@@ -1,7 +1,7 @@
 import React from 'react';
 import { Facebook, Instagram, Linkedin, Mail, Phone, MapPin, ArrowUp, MessageCircle } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import { faWhatsapp, faYoutube } from '@fortawesome/free-brands-svg-icons';
 
 const Footer = () => {
   const scrollToTop = () => {
@@ -31,8 +31,8 @@ const Footer = () => {
               <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors duration-200">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-blue-500 transition-colors duration-200">
-                <Linkedin size={20} />
+              <a href="https://www.youtube.com/@yaseenmuhammed-319" className="text-gray-400 hover:text-blue-500 transition-colors duration-200">
+              <FontAwesomeIcon icon={faYoutube} className="text-xl" />
               </a>
             </div>
           </div>
