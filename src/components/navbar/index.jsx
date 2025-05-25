@@ -20,11 +20,11 @@ const Navbar = () => {
   return (
     <div className={`w-full flex justify-center  items-center transform transition-all duration-500 ease-in-out ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
       <div className="max-w-[1300px] w-full">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between  items-center">
           {/* Logo */}
-          <div className="">
+          <div className="flex w-[50%] items-center gap-12 ">
             <img src={LOgo} alt="logo" className="w-[80px]" />
-          </div>
+      
 
           {/* Name */}
           <div>
@@ -32,14 +32,15 @@ const Navbar = () => {
               TechFix
             </h1>
           </div>
-
+          </div>
           {/* Desktop Navigation */}
+          <div className="flex items-center gap-12 justify-end  w-[50%]">
           <div className="hidden md:block">
             <ul className="flex gap-4 justify-center items-center">
               {['Home', 'About', 'Our Services', 'Contact'].map((item, index) => (
                 <li 
                   key={item}
-                  className={`text-[16px] hover:text-gray-600 cursor-pointer transform transition-all duration-300 hover:-translate-y-1 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
+                  className={`text-[22px] hover:text-gray-600 cursor-pointer transform transition-all duration-300 hover:-translate-y-1 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                   onClick={() => {
                     if (item === 'About') scrollToSection('about');
@@ -61,7 +62,7 @@ const Navbar = () => {
             </button>
             </a>
           </div>
-
+          </div>
           {/* Mobile menu button */}
           <div className="px-3">
           <button 

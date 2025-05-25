@@ -2,7 +2,7 @@ const RightRadiusCard = ({ img, listPoints, header }) => {
   return (
     <div className="bg-blue-50 p-4 sm:p-6 md:p-8 rounded-l-3xl sm:rounded-l-full flex flex-col sm:flex-row gap-4 w-full">
       
-      <div className='w-full flex flex-col p-4 justify-center items-center gap-4 sm:w-[70%] order-2 sm:order-1'>
+      <div className='w-full flex flex-col p-4 justify-center items-center gap-4 sm:w-[70%] order-2 sm:order-1' data-aos="fade-up">
         <h1 className='text-xl font-[500] text-center'>
           {header}
         </h1>
@@ -15,7 +15,7 @@ const RightRadiusCard = ({ img, listPoints, header }) => {
         </div>
       </div>
       
-      <div className='w-full sm:w-[35%] flex justify-center items-center'>
+      <div className='w-full sm:w-[35%] flex justify-center items-center' data-aos="fade-down">
         <img className='w-40 sm:w-48 md:w-56' src={img} alt="" />
       </div>
       
