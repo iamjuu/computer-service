@@ -47,17 +47,11 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="bg-blue-50 min-h-screen flex items-center justify-center p-4">
-      <div className="relative w-full max-w-md mx-auto">
-        {/* Decorative circles */}
-        <div className="absolute top-0 left-0 w-32 h-32 bg-blue-200 rounded-full opacity-70"></div>
-        <div className="absolute top-16 left-16 w-8 h-8 bg-blue-200 rounded-full opacity-70"></div>
-        <div className="absolute bottom-8 right-0 w-36 h-36 bg-blue-200 rounded-full opacity-70"></div>
-        <div className="absolute bottom-24 right-16 w-10 h-10 bg-blue-200 rounded-full opacity-70"></div>
-        
+    <div className=" w-full flex  p-4">
+      <div className="w-full  max-w-xl mx-auto">
+      
         {/* Form container */}
         <div className="relative bg-white rounded-lg shadow-lg p-8 z-10">
-          <h1 className="text-3xl font-bold text-blue-600 text-center mb-6">Contact Us</h1>
           
           <div>
             <div className="mb-4">
