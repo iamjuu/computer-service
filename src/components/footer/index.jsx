@@ -71,7 +71,7 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <MapPin size={16} className="text-gray-400 flex-shrink-0" />
-                <span className="text-gray-300">Computer Care, Main Road, Kannur, Kerala 670001</span>
+                <span className="text-gray-300">Edakkad Beach Road, Kannur, Kerala 670663</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone size={16} className="text-gray-400 flex-shrink-0" />
