@@ -10,7 +10,7 @@ const LeftRadiusCard = ({ img, listPoints = [], header }) => {
         <h1 className='text-xl font-[500] text-center'>
           {header}
         </h1>
-        <div className='text-[18px] font-[400] space-y-2 w-full'>
+        <div className='text-sm md:text-[16px] font-[400] space-y-2 w-full'>
           {Array.isArray(listPoints) && listPoints.map((point, index) => (
             <p key={index} className='leading-relaxed'>
               {point}

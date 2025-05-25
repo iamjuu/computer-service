@@ -18,7 +18,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className={`w-full flex justify-center items-center transform transition-all duration-500 ease-in-out ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
+    <div className={`w-full flex justify-center  items-center transform transition-all duration-500 ease-in-out ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
       <div className="max-w-[1300px] w-full">
         <div className="flex justify-between items-center">
           {/* Logo */}
@@ -63,8 +63,9 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
+          <div className="px-3">
           <button 
-            className="md:hidden transition-transform duration-300 ease-in-out"
+            className="md:hidden  transition-transform duration-300 ease-in-out"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             <svg className={`w-6 h-6 transform transition-transform duration-300 ${isMenuOpen ? 'rotate-90' : 'rotate-0'}`} 
@@ -79,6 +80,7 @@ const Navbar = () => {
               )}
             </svg>
           </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
