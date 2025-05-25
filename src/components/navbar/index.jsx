@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { LOgo } from "../../assets";
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -17,30 +18,20 @@ const Navbar = () => {
   };
 
   return (
-    <div className={`w-full  flex justify-center items-center transform transition-all duration-500 ease-in-out ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
-      <div className="max-w-[1300px] w-full ">
-        <div className="flex justify-between   items-center">
+    <div className={`w-full flex justify-center items-center transform transition-all duration-500 ease-in-out ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
+      <div className="max-w-[1300px] w-full">
+        <div className="flex justify-between items-center">
+          {/* Logo */}
           <div className="">
-            <img src={LOgo} alt="logo" className="w-[80px] " />
+            <img src={LOgo} alt="logo" className="w-[80px]" />
           </div>
-          
-          {/* Mobile menu button */}
-          <button 
-            className="md:hidden transition-transform   duration-300 ease-in-out"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            <svg className={`w-6 h-6 transform transition-transform duration-300 ${isMenuOpen ? 'rotate-90' : 'rotate-0'}`} 
-                 fill="none" 
-                 stroke="currentColor" 
-                 viewBox="0 0 24 24"
-            >
-              {isMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
+
+          {/* Name */}
+          <div>
+            <h1 className="text-[35px] font-[400]">
+              TechFix
+            </h1>
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:block">
@@ -62,11 +53,30 @@ const Navbar = () => {
             </ul>
           </div>
 
-          <div className="hidden md:block">
-            <button className="px-4 py-2 border border-blue-500 rounded-full text-black  hover:bg-blue-500  hover:text-white transform transition-all duration-300 hover:scale-105 hover:-translate-y-1">
+          {/* Follow Button */}
+          <div className="hidden px-3 md:block">
+            <button className="px-4 py-2 border border-blue-500 rounded-full text-black hover:bg-blue-500 hover:text-white transform transition-all duration-300 hover:scale-105 hover:-translate-y-1">
               Follow Us
             </button>
           </div>
+
+          {/* Mobile menu button */}
+          <button 
+            className="md:hidden transition-transform duration-300 ease-in-out"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <svg className={`w-6 h-6 transform transition-transform duration-300 ${isMenuOpen ? 'rotate-90' : 'rotate-0'}`} 
+                 fill="none" 
+                 stroke="currentColor" 
+                 viewBox="0 0 24 24"
+            >
+              {isMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
         </div>
 
         {/* Mobile Navigation */}
