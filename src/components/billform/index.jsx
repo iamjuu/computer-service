@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const BillForm = ({ billId, phoneNumber = "0321-8082879" }) => {
+const BillForm = ({ billId, phoneNumber = "0321-8082879", isAdmin = false }) => {
   const [billData, setBillData] = useState({
     customerName: '',
     date: new Date().toISOString().split('T')[0],
@@ -288,6 +288,17 @@ const BillForm = ({ billId, phoneNumber = "0321-8082879" }) => {
                 className="w-full p-1 text-xs border-0 outline-none h-8"
                 placeholder="Enter customer name"
               />
+              <div className="bg-red-800 text-white text-center py-1 text-xs font-bold">
+                PHONE NUMBER
+              </div>
+              <input
+                type="text"
+                name="phoneNumber"
+                value={billData.phoneNumber}
+                onChange={handleInputChange}
+                className="w-full p-1 text-xs border-0 outline-none h-8"
+                placeholder="Enter phone number"
+              />
             </div>
             <div className="w-24">
               <div className="border-b border-black">
@@ -459,26 +470,30 @@ const BillForm = ({ billId, phoneNumber = "0321-8082879" }) => {
 
       {/* Control Buttons */}
       <div className="mt-4 flex flex-wrap gap-2 justify-center">
-        <button
-          onClick={addItem}
-          className="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700"
-        >
-          Add Row
-        </button>
-        <button
-          onClick={removeLastItem}
-          className="px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700"
-          disabled={billData.items.length <= 1}
-        >
-          Remove Row
-        </button>
-        <button
-          onClick={saveBillData}
-          disabled={saving}
-          className="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 disabled:opacity-50"
-        >
-          {saving ? 'Saving...' : 'Save Bill'}
-        </button>
+        {isAdmin && (
+          <>
+            <button
+              onClick={addItem}
+              className="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700"
+            >
+              Add Row
+            </button>
+            <button
+              onClick={removeLastItem}
+              className="px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700"
+              disabled={billData.items.length <= 1}
+            >
+              Remove Row
+            </button>
+            <button
+              onClick={saveBillData}
+              disabled={saving}
+              className="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 disabled:opacity-50"
+            >
+              {saving ? 'Saving...' : 'Save Bill'}
+            </button>
+          </>
+        )}
         <button
           onClick={handlePrint}
           className="px-3 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700"

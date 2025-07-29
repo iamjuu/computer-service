@@ -33,9 +33,23 @@ const AdminDashboard = () => {
     navigate('/bill');
   };
 
+  const handleLogout = () => {
+    console.log('User logging out from admin panel');
+    localStorage.removeItem('isLoggedIn');
+    navigate('/');
+  };
+
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800">Admin Dashboard</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
+        <button
+          onClick={handleLogout}
+          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
+        >
+          Logout
+        </button>
+      </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Total Users Card */}

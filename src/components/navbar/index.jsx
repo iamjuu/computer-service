@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { LOgo } from "../../assets";
+import logo from "../../assets/logo.png";
 
 const Navbar = ({ isModalOpen: externalIsModalOpen, setIsModalOpen: externalSetIsModalOpen }) => {
   const navigate = useNavigate();
@@ -9,6 +9,7 @@ const Navbar = ({ isModalOpen: externalIsModalOpen, setIsModalOpen: externalSetI
   const [isVisible, setIsVisible] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isValidNumber, setIsValidNumber] = useState(false);
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
   // Use external modal state if provided, otherwise use internal state
   const isModalOpen = externalIsModalOpen !== undefined ? externalIsModalOpen : false;
@@ -30,7 +31,7 @@ const Navbar = ({ isModalOpen: externalIsModalOpen, setIsModalOpen: externalSetI
       console.log('Proceeding with phone number:', phoneNumber);
       setIsModalOpen(false);
       setPhoneNumber("");
-      navigate('/bill', { state: { phoneNumber } });
+      navigate('/bill', { state: { phoneNumber },admin:false });
     }
   };
 
@@ -74,6 +75,21 @@ const Navbar = ({ isModalOpen: externalIsModalOpen, setIsModalOpen: externalSetI
     }
   };
 
+  const handleLogoClick = () => {
+    console.log('Logo clicked - checking login status');
+    if (isLoggedIn) {
+      console.log('User is logged in - navigating to admin panel');
+      navigate('/admin');
+    } else {
+      console.log('User is not logged in - navigating to login page');
+      navigate('/login');
+    }
+  };
+
+  const navItems = isLoggedIn 
+    ? ['Home', 'Bill', 'About', 'Our Services', 'Contact'] 
+    : ['Home', 'Bill', 'About', 'Our Services', 'Contact'];
+
   return (
     <>
       <div className={`w-full flex justify-center items-center transform transition-all duration-500 ease-in-out ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
@@ -82,10 +98,9 @@ const Navbar = ({ isModalOpen: externalIsModalOpen, setIsModalOpen: externalSetI
             {/* Logo */}
             <div 
               className="flex items-center gap-4 md:gap-12 flex-shrink-0 cursor-pointer" 
-              onClick={() => navigate('/')}
+              onClick={handleLogoClick}
             >
-              <img src={LOgo} alt="logo" className="w-[60px] md:w-[80px]" />
-              {/* Name */}
+              <img src={logo} alt="logo" className="w-[60px] md:w-[80px]" />
               <div>
                 <h1 className="text-[28px] md:text-[35px] font-[400]">
                   TechFix
@@ -97,7 +112,7 @@ const Navbar = ({ isModalOpen: externalIsModalOpen, setIsModalOpen: externalSetI
             <div className="hidden md:flex items-center gap-12 justify-end w-[50%]">
               <div className="hidden md:block">
                 <ul className="flex gap-4 justify-center items-center">
-                  {['Home', 'Bill', 'About', 'Our Services', 'Contact'].map((item, index) => (
+                  {navItems.map((item, index) => (
                     <li 
                       key={item}
                       className={`text-[16px] hover:text-gray-600 cursor-pointer transform transition-all duration-300 hover:-translate-y-1 ${
@@ -144,7 +159,7 @@ const Navbar = ({ isModalOpen: externalIsModalOpen, setIsModalOpen: externalSetI
           {/* Mobile Navigation */}
           <div className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${isMenuOpen ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'}`}>
             <ul className="flex flex-col py-4 gap-6">
-              {['Home', 'Bill', 'About', 'Our Services', 'Contact'].map((item, index) => (
+              {navItems.map((item, index) => (
                 <li 
                   key={item}
                   className={`text-[18px] hover:text-gray-600 cursor-pointer transform transition-all duration-300 hover:-translate-x-2 ${

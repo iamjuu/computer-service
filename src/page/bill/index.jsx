@@ -33,7 +33,7 @@ const BillPage = () => {
             Back to {fromAdmin ? 'Dashboard' : 'Home'}
           </button>
         </div>
-        <BillForm phoneNumber={phoneNumber} />
+        <BillForm phoneNumber={phoneNumber} isAdmin={fromAdmin} />
       </div>
     </div>
   );
