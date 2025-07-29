@@ -1,63 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/navbar";
-import { mainImage, Compterimage, NonIt } from "../../assets";
+import { Compterimage } from "../../assets";
 import LeftRadiusCard from "../../components/leftRadiusCard";
 import RightRadiusCard from "../../components/rightRaduisCard";
 import ContactForm from "../../components/contactform";
 import Footer from "../../components/footer";
-import { software, Techfix1, Techfix2,Gaming } from "../../assets";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { leftData, rightData } from "../../constant/data";
 
-const leftData = [
-
-  {
-   img:software,
-    listPoints: [
-      "✅ *Web Development* – Modern, responsive websites.",
-      "✅ *Mobile Apps* – iOS & Android app development. ",
-      "✅ *E-commerce Solutions* – Complete online stores.",
-      "✅ *Maintenance & Updates* – Ongoing support packages from ₹2,000/month."
-    ],
-    header: "Want to go digital? Our *affordable web & app development* services bring your ideas to life!"
-  }
-];
-const rightData = [
-  {
-    img: Gaming,
-    listPoints: [
-      "✅ *Expert Assembly* – Precision-built with top-tier components (GPU, CPU, cooling & more).",
-      "✅ *Personalized Setup* – Optimized for speed, power, or silence—your choice!",
-      "✅ *Upgrades & Repairs* – Boost your existing PC or fix hardware issues fast.",
-      "✅ *Cable Management & Aesthetics* – Sleek, clean builds with RGB or minimalist styles.",
-    ],
-    header:
-      "Want a high-performance PC tailored just for you? We specialize in *custom-built rigs* for gaming, work, and creativity!",
-  },
-  {
-    img: Techfix1,
-    listPoints: [
-      "✅ *Network Infrastructure* – Complete setup of routers, switches, and enterprise-grade networking.",
-      "✅ *Wireless Solutions* – High-speed WiFi installation and optimization for homes and offices.",
-      "✅ *Security Systems* – Firewall configuration and network protection implementation.",
-      "✅ *Cable Installation* – Professional structured cabling and fiber optic installations.",
-    ],
-    header:
-      "Need reliable networking solutions? We provide *comprehensive network setup* for seamless connectivity!",
-  },
-  {
-    img: Techfix2,
-    listPoints: [
-      "✅ *System Diagnostics* – Quick identification of hardware and software issues.",
-      "✅ *Data Recovery* – Professional recovery services for lost or corrupted files.",
-      "✅ *Performance Optimization* – Speed up slow computers and eliminate bottlenecks.",
-      "✅ *Virus Removal* – Complete malware cleaning and system security restoration.",
-    ],
-    header:
-      "Computer running slow or having issues? Our *expert repair services* will get you back up and running!",
-  },
-];
 const Index = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -74,12 +28,15 @@ const Index = () => {
 
   return (
     <div className="">
-      <Navbar />
+      <Navbar isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
       <div className="w-full py-8 md:py-16 flex justify-center items-center">
         <div className="w-full max-w-[1300px] px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             {/* Left content */}
-            <div className="w-full md:w-1/2 space-y-4 md:space-y-6" data-aos="fade-up">
+            <div
+              className="w-full md:w-1/2 space-y-4 md:space-y-6"
+              data-aos="fade-up"
+            >
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
                 <span className="font-normal text-blue-600">
                   Providing Reliable Hardware{" "}
@@ -90,35 +47,61 @@ const Index = () => {
                 </span>
               </h1>
 
-              <p className="text-gray-600   text-sm  md:text-[20px]">
+              <p className="text-gray-600 text-sm md:text-[20px]">
                 We specialize in delivering high-quality computer hardware and
                 networking solutions for businesses, homes, and institutions.
                 From device setup and configuration, we ensure speed, security,
                 and seamless connectivity in every project.
               </p>
 
-              <button
-                onClick={scrollToServices}
-                className="bg-blue-600 hover:bg-blue-700 transition-colors text-white font-medium py-2 px-4 sm:px-6 rounded-full flex items-center text-sm sm:text-base"
-              >
-                Learn More
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 sm:h-5 sm:w-5 ml-2"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
+              <div className="flex gap-4">
+                <button
+                  onClick={scrollToServices}
+                  className="bg-blue-600 hover:bg-blue-700 transition-colors text-white font-medium py-2 px-4 sm:px-6 rounded-full flex items-center text-sm sm:text-base"
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
+                  Learn More
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 sm:h-5 sm:w-5 ml-2"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => {
+                    console.log('Opening download bill modal');
+                    setIsModalOpen(true);
+                  }}
+                  className="hover:bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-black hover:text-white border-1 border-[#0048FF] shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 font-medium py-2 px-4 sm:px-6 rounded-full flex items-center text-sm sm:text-base"
+                >
+                  download bill
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 sm:h-5 sm:w-5 ml-2"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
 
             {/* Right content - Illustration */}
-            <div className="w-full md:w-1/2 flex justify-center items-center mt-6 md:mt-0" data-aos="fade-down">
+            <div
+              className="w-full md:w-1/2 flex justify-center items-center mt-6 md:mt-0"
+              data-aos="fade-down"
+            >
               <img
                 className="w-full max-w-md"
                 src={Compterimage}
@@ -128,8 +111,14 @@ const Index = () => {
           </div>
 
           {/* About Company section with responsive fixes */}
-          <div className="bg-[#EDF7FF] p-3 sm:p-5 w-full mt-8 md:mt-10 flex flex-col sm:flex-row justify-center gap-3 sm:gap-5 rounded-3xl sm:rounded-full" data-aos="fade-up">
-            <div className="w-full sm:w-[30%] py-4 rounded-2xl sm:rounded-l-full bg-white flex justify-center items-center" data-aos="fade-down">
+          <div
+            className="bg-[#EDF7FF] p-3 sm:p-5 w-full mt-8 md:mt-10 flex flex-col sm:flex-row justify-center gap-3 sm:gap-5 rounded-3xl sm:rounded-full"
+            data-aos="fade-up"
+          >
+            <div
+              className="w-full sm:w-[30%] py-4 rounded-2xl sm:rounded-l-full bg-white flex justify-center items-center"
+              data-aos="fade-down"
+            >
               <h1
                 id="about"
                 className="text-xl sm:text-2xl text-[#0048FF] font-bold text-center"
@@ -137,7 +126,10 @@ const Index = () => {
                 About <br /> Company
               </h1>
             </div>
-            <div className="w-full sm:w-[70%] flex justify-center items-center p-4 sm:py-0" data-aos="fade-up">
+            <div
+              className="w-full sm:w-[70%] flex justify-center items-center p-4 sm:py-0"
+              data-aos="fade-up"
+            >
               <p className="text-gray-600 text-[18px] p-4">
                 I offer custom computer builds, high-performance gaming PC
                 setups, and reliable computer repair services, all from the
@@ -183,7 +175,10 @@ const Index = () => {
               ))}
             </div>
           </div>
-          <div className="mt-8 w-full flex justify-center flex-col sm:mt-10" data-aos="fade-up">
+          <div
+            className="mt-8 w-full flex justify-center flex-col sm:mt-10"
+            data-aos="fade-up"
+          >
             <h1
               id="contact"
               className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-10 mt-8 sm:mt-10"
