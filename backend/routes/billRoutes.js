@@ -5,6 +5,7 @@ const {
   getTotalCount,
   getTotalRevenue,
   getBillByNumber,
+  getBillByPhoneNumber,
   deleteBill
 } = require('../controllers/billController');
 
@@ -17,8 +18,10 @@ router.get('/total-count', getTotalCount);
 // GET route for getting total revenue
 router.get('/total-revenue', getTotalRevenue);
 
-// GET route for getting bills by customer number
-router.get('/bill-by-number/:customerNumber', getBillByNumber);
+
+
+// GET route for getting bills by phone number
+router.get('/bill-by-number/:phoneNumber', getBillByPhoneNumber);
 
 // DELETE route for deleting a bill by ID
 router.delete('/delete-bill/:id', deleteBill);

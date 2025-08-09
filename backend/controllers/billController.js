@@ -113,10 +113,8 @@ const getTotalRevenue = async (req, res) => {
   }
 };
 
-// @desc    Get bills by customer number
-// @route   GET /bill-by-number/:customerNumber
-// @access  Public
-const getBillByNumber = async (req, res) => {
+
+const getBillByPhoneNumber = async (req, res) => {
   try {
     // Check if MongoDB is connected
     if (mongoose.connection.readyState !== 1) {
@@ -126,30 +124,65 @@ const getBillByNumber = async (req, res) => {
       });
     }
 
-    const { customerNumber } = req.params;
+    const { phoneNumber } = req.params;
 
-    // Validate if customer number is provided
-    if (!customerNumber) {
-      return res.status(400).json({ message: 'Customer number is required' });
+    // Validate if phone number is provided
+    if (!phoneNumber) {
+      return res.status(400).json({ message: 'Phone number is required' });
     }
 
-    // Find bills by customer number
-    const bills = await Bill.find({ customerNumber: customerNumber });
+    console.log('Searching for bills with phone number:', phoneNumber);
+
+    // Debug: Check total bills in database
+    const totalBills = await Bill.countDocuments();
+    console.log('Total bills in database:', totalBills);
+
+    // Debug: Check all customerNumbers in database
+    const allCustomerNumbers = await Bill.find({}, { customerNumber: 1, recipientName: 1 }).limit(10);
+    console.log('Sample customer numbers:', allCustomerNumbers);
+
+    // Try multiple search strategies
+    const searchQueries = [
+      { customerNumber: phoneNumber }, // Exact match
+      { customerNumber: { $regex: phoneNumber, $options: 'i' } }, // Case insensitive regex
+      { customerNumber: { $regex: phoneNumber.replace(/\D/g, ''), $options: 'i' } }, // Only digits
+    ];
+
+    let bills = [];
+    let searchMethod = '';
+
+    // Try each search strategy
+    for (let i = 0; i < searchQueries.length; i++) {
+      bills = await Bill.find(searchQueries[i]);
+      if (bills.length > 0) {
+        searchMethod = `Search method ${i + 1}`;
+        break;
+      }
+    }
+
+    console.log(`Found ${bills.length} bills using: ${searchMethod || 'No method worked'}`);
     
     if (bills.length === 0) {
+      // Return more helpful debugging info
       return res.status(404).json({ 
-        message: 'No bills found for this customer number',
-        data: []
+        message: 'No bills found for this phone number',
+        data: [],
+        debug: {
+          searchedPhoneNumber: phoneNumber,
+          totalBillsInDB: totalBills,
+          sampleCustomerNumbers: allCustomerNumbers.map(b => b.customerNumber)
+        }
       });
     }
 
     res.status(200).json({
       message: 'Bills retrieved successfully',
       data: bills,
-      count: bills.length
+      count: bills.length,
+      searchMethod: searchMethod
     });
   } catch (error) {
-    console.error('Error getting bills by customer number:', error);
+    console.error('Error getting bills by phone number:', error);
     res.status(500).json({
       message: 'Failed to get bills',
       error: error.message,
@@ -203,6 +236,7 @@ module.exports = {
   createBill,
   getTotalCount,
   getTotalRevenue,
-  getBillByNumber,
+  
+  getBillByPhoneNumber,
   deleteBill
 }; 

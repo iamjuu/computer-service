@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { get } from '../../utils/functions';
 
-const BillForm = ({ billId, phoneNumber = "0321-8082879", isAdmin = false }) => {
+const BillForm = ({ billId, phoneNumber , isAdmin = false }) => {
   const [billData, setBillData] = useState({
     customerName: '',
     date: new Date().toISOString().split('T')[0],
@@ -18,23 +19,18 @@ const BillForm = ({ billId, phoneNumber = "0321-8082879", isAdmin = false }) => 
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [saving, setSaving] = useState(false);
   const billRef = useRef(null);
 
   // Fetch bill data from backend
-  const fetchBillData = async (id) => {
+  const fetchBillData = useCallback(async (id) => {
     if (!id) return;
     
     setLoading(true);
     setError(null);
     
     try {
-      const response = await fetch(`http://localhost:5000/api/bills/${id}`);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch bill: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
+      const response = await get(`/bill-by-number/${phoneNumber}`);
+      const data = response.data;
       
       // Transform backend data to component format
       setBillData({
@@ -62,105 +58,20 @@ const BillForm = ({ billId, phoneNumber = "0321-8082879", isAdmin = false }) => 
     } finally {
       setLoading(false);
     }
-  };
+  }, [phoneNumber]);
 
-  // Save bill data to backend
-  const saveBillData = async () => {
-    setSaving(true);
-    setError(null);
-    
-    try {
-      // Transform component data to backend format
-      const dataToSave = {
-        customer_name: billData.customerName,
-        date: billData.date,
-        ref_no: billData.refNo,
-        invoice_no: billData.invNo,
-        page: billData.page,
-        phone_number: billData.phoneNumber,
-        items: billData.items.filter(item => 
-          item.particular || item.quantity || item.rate
-        ).map(item => ({
-          particular: item.particular,
-          quantity: parseFloat(item.quantity || 0),
-          unit: item.unit,
-          rate: parseFloat(item.rate || 0),
-          amount: parseFloat(item.amount || 0)
-        })),
-        total_amount: billData.totalAmount,
-        discount: billData.discount,
-        final_amount: billData.finalAmount
-      };
 
-      const url = billId ? `http://localhost:5000/api/bills/${billId}` : 'http://localhost:5000/api/bills';
-      const method = billId ? 'PUT' : 'POST';
-      
-      const response = await fetch(url, {
-        method: method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSave)
-      });
 
-      if (!response.ok) {
-        throw new Error(`Failed to save bill: ${response.statusText}`);
-      }
 
-      const savedData = await response.json();
-      console.log('Bill saved successfully:', savedData);
-      
-      // Show success message
-      alert('Bill saved successfully!');
-      
-    } catch (err) {
-      setError(err.message);
-      console.error('Error saving bill data:', err);
-      alert('Failed to save bill. Please try again.');
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  // Fetch customer data by phone number
-  const fetchCustomerData = async (phone) => {
-    if (!phone || phone.length < 10) return;
-    
-    try {
-      const response = await fetch(`/api/customers/search?phone=${phone}`);
-      if (response.ok) {
-        const customerData = await response.json();
-        if (customerData) {
-          setBillData(prev => ({
-            ...prev,
-            customerName: customerData.name || prev.customerName,
-            phoneNumber: customerData.phone || prev.phoneNumber
-          }));
-        }
-      }
-    } catch (err) {
-      console.error('Error fetching customer data:', err);
-    }
-  };
 
   // Load bill data on component mount
   useEffect(() => {
     if (billId) {
       fetchBillData(billId);
     }
-  }, [billId]);
+  }, [billId, fetchBillData]);
 
-  // Auto-save functionality (optional)
-  useEffect(() => {
-    const autoSaveTimer = setTimeout(() => {
-      if (billData.customerName && billData.items.some(item => item.particular)) {
-        // Auto-save after 30 seconds of inactivity
-        // saveBillData();
-      }
-    }, 30000);
 
-    return () => clearTimeout(autoSaveTimer);
-  }, [billData]);
 
   const handleInputChange = (e, index = null) => {
     if (index !== null) {
@@ -192,10 +103,7 @@ const BillForm = ({ billId, phoneNumber = "0321-8082879", isAdmin = false }) => 
         updates.finalAmount = billData.totalAmount - parseFloat(newValue || 0);
       }
       
-      // Fetch customer data when phone number changes
-      if (e.target.name === 'phoneNumber') {
-        fetchCustomerData(newValue);
-      }
+
       
       setBillData(prevData => ({
         ...prevData,
@@ -485,13 +393,7 @@ const BillForm = ({ billId, phoneNumber = "0321-8082879", isAdmin = false }) => 
             >
               Remove Row
             </button>
-            <button
-              onClick={saveBillData}
-              disabled={saving}
-              className="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 disabled:opacity-50"
-            >
-              {saving ? 'Saving...' : 'Save Bill'}
-            </button>
+
           </>
         )}
         <button
