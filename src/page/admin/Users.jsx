@@ -49,16 +49,48 @@ const CustomerBills = () => { // Renamed for clarity
   };
 
   const handleDeleteBill = async (billId) => {
-    if (window.confirm('Are you sure you want to delete this bill?')) {
+    if (window.confirm('Are you sure you want to delete this bill? This action cannot be undone.')) {
       try {
         setDeleting(billId);
-        // Implement actual API call to delete bill
-        await del(`/delete-bill/${billId}`); // Assuming you have a delete endpoint
+        console.log('Deleting bill with ID:', billId);
         
-        setBills(prevBills => prevBills.filter(bill => bill._id !== billId && bill.id !== billId));
+        // Validate billId before making API call
+        if (!billId) {
+          throw new Error('Invalid bill ID');
+        }
+        
+        // Make API call to delete bill
+        const response = await del(`/delete-user/${billId}`);
+        console.log('Delete response:', response);
+        
+        // Check if response indicates success
+        if (response && (response.status === 200 || response.data)) {
+          // Remove the bill from the local state
+          setBills(prevBills => prevBills.filter(bill => bill._id !== billId && bill.id !== billId));
+          
+          // Show success message
+          alert('Bill deleted successfully!');
+        } else {
+          throw new Error('Unexpected response from server');
+        }
       } catch (error) {
         console.error('Error deleting bill:', error);
-        alert('Failed to delete bill. Please try again.');
+        
+        // Show more specific error message
+        let errorMessage = 'Failed to delete bill';
+        
+        if (error.response) {
+          // Server responded with error status
+          errorMessage = error.response.data?.message || `Server error: ${error.response.status}`;
+        } else if (error.request) {
+          // Request was made but no response received
+          errorMessage = 'Network error. Please check your connection and try again.';
+        } else {
+          // Something else happened
+          errorMessage = error.message || 'An unexpected error occurred';
+        }
+        
+        alert(`Error: ${errorMessage}`);
       } finally {
         setDeleting(null);
       }

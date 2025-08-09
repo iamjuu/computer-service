@@ -113,8 +113,51 @@ const getTotalRevenue = async (req, res) => {
   }
 };
 
+// @desc    Delete a bill by ID
+// @route   DELETE /delete-bill/:id
+// @access  Public
+const deleteBill = async (req, res) => {
+  try {
+    // Check if MongoDB is connected
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({ 
+        message: 'Database connection unavailable. Please try again later.',
+        error: 'MongoDB not connected'
+      });
+    }
+
+    const { id } = req.params;
+
+    // Validate if ID is provided
+    if (!id) {
+      return res.status(400).json({ message: 'Bill ID is required' });
+    }
+
+    // Check if the bill exists
+    const existingBill = await Bill.findById(id);
+    if (!existingBill) {
+      return res.status(404).json({ message: 'Bill not found' });
+    }
+
+    // Delete the bill
+    await Bill.findByIdAndDelete(id);
+    
+    res.status(200).json({
+      message: 'Bill deleted successfully',
+      deletedBillId: id
+    });
+  } catch (error) {
+    console.error('Error deleting bill:', error);
+    res.status(500).json({
+      message: 'Failed to delete bill',
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createBill,
   getTotalCount,
-  getTotalRevenue
+  getTotalRevenue,
+  deleteBill
 }; 
