@@ -11,7 +11,7 @@ import {
   ArcElement,
 } from 'chart.js';
 import { Line, Pie } from 'react-chartjs-2';
-import axios from 'axios';
+import { get } from '../../utils/functions';
 
 ChartJS.register(
   CategoryScale,
@@ -37,17 +37,50 @@ const Dashboard = () => {
   // Fetch statistics on component mount
   useEffect(() => {
     fetchStatistics();
+    fetchTotalCount();
+    fetchTotalRevenue();
   }, []);
 
   const fetchStatistics = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/bills/statistics');
+      const response = await get('/api/bills/statistics');
       setStatistics(response.data);
     } catch (error) {
       console.error('Error fetching statistics:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchTotalCount = async () => {
+    try {
+      const response = await get('/total-count');
+      const count = response.data.totalCount || response.data.count || response.data;
+      
+      // Update statistics to use the total count for both bills and users
+      setStatistics(prev => ({
+        ...prev,
+        totalBills: count,
+        totalUsers: count
+      }));
+    } catch (error) {
+      console.error('Error fetching total count:', error);
+    }
+  };
+
+  const fetchTotalRevenue = async () => {
+    try {
+      const response = await get('/total-revenue');
+      const revenue = response.data.totalRevenue || 0;
+      
+      // Update statistics with the fetched total revenue
+      setStatistics(prev => ({
+        ...prev,
+        totalRevenue: revenue
+      }));
+    } catch (error) {
+      console.error('Error fetching total revenue:', error);
     }
   };
 
@@ -131,7 +164,7 @@ const Dashboard = () => {
   return (
     <div className="space-y-6">
       {/* Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center">
             <div className="flex-shrink-0">
@@ -186,10 +219,16 @@ const Dashboard = () => {
           </div>
         </div>
 
+       
+
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-lg font-semibold text-gray-700 mb-4">Quick Actions</h2>
           <button 
-            onClick={fetchStatistics}
+            onClick={() => {
+              fetchStatistics();
+              fetchTotalCount();
+              fetchTotalRevenue();
+            }}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors w-full mb-2"
           >
             Refresh Data

@@ -46,6 +46,74 @@ console.log(savedBill,'savedBill')
   }
 };
 
+// @desc    Get total count of bills
+// @route   GET /total-count
+// @access  Public
+const getTotalCount = async (req, res) => {
+  try {
+    // Check if MongoDB is connected
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({ 
+        message: 'Database connection unavailable. Please try again later.',
+        error: 'MongoDB not connected'
+      });
+    }
+
+    const totalCount = await Bill.countDocuments();
+    
+    res.status(200).json({
+      totalCount: totalCount,
+      message: 'Total count retrieved successfully'
+    });
+  } catch (error) {
+    console.error('Error getting total count:', error);
+    res.status(500).json({
+      message: 'Failed to get total count',
+      error: error.message,
+    });
+  }
+};
+
+// @desc    Get total revenue from all bills
+// @route   GET /total-revenue
+// @access  Public
+const getTotalRevenue = async (req, res) => {
+  try {
+    // Check if MongoDB is connected
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({ 
+        message: 'Database connection unavailable. Please try again later.',
+        error: 'MongoDB not connected'
+      });
+    }
+
+    // Aggregate total revenue from all bills
+    const result = await Bill.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalRevenue: { $sum: '$total' }
+        }
+      }
+    ]);
+
+    const totalRevenue = result.length > 0 ? result[0].totalRevenue : 0;
+    
+    res.status(200).json({
+      totalRevenue: totalRevenue,
+      message: 'Total revenue retrieved successfully'
+    });
+  } catch (error) {
+    console.error('Error getting total revenue:', error);
+    res.status(500).json({
+      message: 'Failed to get total revenue',
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
-  createBill
+  createBill,
+  getTotalCount,
+  getTotalRevenue
 }; 
