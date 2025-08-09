@@ -15,7 +15,7 @@ const createBill = async (req, res) => {
     }
 
     console.log(req.body,'data is here')
-    const { recipientName, total, spareParts, warrantyStarting, warrantyEnding } = req.body;
+    const { recipientName, customerNumber, total, spareParts, warrantyStarting, warrantyEnding } = req.body;
 
     // Validation
     if (!recipientName) {
@@ -25,6 +25,7 @@ const createBill = async (req, res) => {
 
     const newBill = new Bill({
       recipientName,
+      customerNumber: customerNumber || '',
       total: parseFloat(total) || 0,
       spareParts: Array.isArray(spareParts) ? spareParts.filter(part => part.description && part.description.trim() !== '') : [],
       warrantyStarting: warrantyStarting ? new Date(warrantyStarting) : null,

@@ -7,6 +7,7 @@ const AddBill = () => {
   
   const [billData, setBillData] = useState({
     recipientName: '',
+    customerNumber: '',
     total: 0,
     spareParts: [{ description: '', amount: 0 }], // Array to handle multiple spare parts with amounts
     warrantyStarting: '',
@@ -75,6 +76,7 @@ const AddBill = () => {
       const calculatedTotal = calculateTotal();
       const requestData = {
         recipientName: billData.recipientName,
+        customerNumber: billData.customerNumber,
         total: calculatedTotal,
         spareParts: billData.spareParts.filter(part => part.description.trim() !== ''), // Remove empty spare parts
         warrantyStarting: billData.warrantyStarting,
@@ -134,8 +136,8 @@ const AddBill = () => {
             <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 
-                {/* Recipient Name - Full Width */}
-                <div className="lg:col-span-2">
+                {/* Recipient Name */}
+                <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Recipient Name *
                   </label>
@@ -147,6 +149,21 @@ const AddBill = () => {
                     className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none transition-all duration-200"
                     placeholder="Enter recipient name"
                     required
+                  />
+                </div>
+
+                {/* Customer Number */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Customer Number
+                  </label>
+                  <input
+                    type="text"
+                    name="customerNumber"
+                    value={billData.customerNumber}
+                    onChange={handleInputChange}
+                    className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none transition-all duration-200"
+                    placeholder="Enter customer number"
                   />
                 </div>
 
