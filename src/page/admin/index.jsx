@@ -49,7 +49,7 @@ const AdminDashboard = () => {
         <div className="p-4">
           <div className="flex items-center justify-between mb-8">
             <h2 className={`font-bold text-xl text-gray-800 ${!isSidebarOpen && 'hidden'}`}>
-              Admin Panel
+              Tech fix  Admin 
             </h2>
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}

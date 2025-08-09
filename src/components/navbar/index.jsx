@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.png";
+import { get } from "../../utils/functions";
 
 const Navbar = ({ isModalOpen: externalIsModalOpen, setIsModalOpen: externalSetIsModalOpen }) => {
   const navigate = useNavigate();
@@ -9,6 +10,7 @@ const Navbar = ({ isModalOpen: externalIsModalOpen, setIsModalOpen: externalSetI
   const [isVisible, setIsVisible] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isValidNumber, setIsValidNumber] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
   // Use external modal state if provided, otherwise use internal state
@@ -26,12 +28,50 @@ const Navbar = ({ isModalOpen: externalIsModalOpen, setIsModalOpen: externalSetI
     console.log('Phone number changed:', value, 'Is valid:', value.length === 10);
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (isValidNumber) {
       console.log('Proceeding with phone number:', phoneNumber);
-      setIsModalOpen(false);
-      setPhoneNumber("");
-      navigate('/bill', { state: { phoneNumber },admin:false });
+      setIsLoading(true);
+      
+      try {
+        // Make API call to get bills by phone number
+        const response = await get(`/bill-by-number/${phoneNumber}`);
+        console.log('Bills found:', response.data);
+        
+        setIsModalOpen(false);
+        setPhoneNumber("");
+        setIsLoading(false);
+        
+        // Navigate to bill page with the fetched data
+        navigate('/bill', { 
+          state: { 
+            phoneNumber,
+            bills: response.data.data,
+            admin: false 
+          }
+        });
+      } catch (error) {
+        console.error('Error fetching bills:', error);
+        setIsLoading(false);
+        
+        // Handle error cases - still navigate but with empty bills array
+        if (error.response && error.response.status === 404) {
+          console.log('No bills found for this number');
+          setIsModalOpen(false);
+          setPhoneNumber("");
+          navigate('/bill', { 
+            state: { 
+              phoneNumber,
+              bills: [],
+              admin: false,
+              message: 'No bills found for this phone number'
+            }
+          });
+        } else {
+          // For other errors, show an alert or handle appropriately
+          alert('Error fetching bills. Please try again.');
+        }
+      }
     }
   };
 
@@ -215,14 +255,20 @@ const Navbar = ({ isModalOpen: externalIsModalOpen, setIsModalOpen: externalSetI
               </button>
               <button
                 onClick={handleContinue}
-                disabled={!isValidNumber}
-                className={`px-4 py-2 rounded-lg ${
-                  isValidNumber
+                disabled={!isValidNumber || isLoading}
+                className={`px-4 py-2 rounded-lg flex items-center gap-2 ${
+                  isValidNumber && !isLoading
                     ? "bg-blue-600 hover:bg-blue-700 text-white"
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
               >
-                Continue
+                {isLoading && (
+                  <svg className="animate-spin h-4 w-4 text-current" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                )}
+                {isLoading ? "Loading..." : "Continue"}
               </button>
             </div>
           </div>

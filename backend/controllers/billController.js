@@ -113,6 +113,50 @@ const getTotalRevenue = async (req, res) => {
   }
 };
 
+// @desc    Get bills by customer number
+// @route   GET /bill-by-number/:customerNumber
+// @access  Public
+const getBillByNumber = async (req, res) => {
+  try {
+    // Check if MongoDB is connected
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({ 
+        message: 'Database connection unavailable. Please try again later.',
+        error: 'MongoDB not connected'
+      });
+    }
+
+    const { customerNumber } = req.params;
+
+    // Validate if customer number is provided
+    if (!customerNumber) {
+      return res.status(400).json({ message: 'Customer number is required' });
+    }
+
+    // Find bills by customer number
+    const bills = await Bill.find({ customerNumber: customerNumber });
+    
+    if (bills.length === 0) {
+      return res.status(404).json({ 
+        message: 'No bills found for this customer number',
+        data: []
+      });
+    }
+
+    res.status(200).json({
+      message: 'Bills retrieved successfully',
+      data: bills,
+      count: bills.length
+    });
+  } catch (error) {
+    console.error('Error getting bills by customer number:', error);
+    res.status(500).json({
+      message: 'Failed to get bills',
+      error: error.message,
+    });
+  }
+};
+
 // @desc    Delete a bill by ID
 // @route   DELETE /delete-bill/:id
 // @access  Public
@@ -159,5 +203,6 @@ module.exports = {
   createBill,
   getTotalCount,
   getTotalRevenue,
+  getBillByNumber,
   deleteBill
 }; 
