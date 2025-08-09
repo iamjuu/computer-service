@@ -36,22 +36,12 @@ const Dashboard = () => {
 
   // Fetch statistics on component mount
   useEffect(() => {
-    fetchStatistics();
+   
     fetchTotalCount();
     fetchTotalRevenue();
   }, []);
 
-  const fetchStatistics = async () => {
-    try {
-      setLoading(true);
-      const response = await get('/api/bills/statistics');
-      setStatistics(response.data);
-    } catch (error) {
-      console.error('Error fetching statistics:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+ 
 
   const fetchTotalCount = async () => {
     try {
