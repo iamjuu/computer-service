@@ -1,48 +1,31 @@
 const express = require('express');
 const cors = require('cors');
-const morgan = require('morgan');
-const winston = require('winston');
+const mongoose = require('mongoose');
+const connectDB = require('./config/db');
+const billRoutes = require('./routes/billRoutes'); // DB connection file
 require('dotenv').config();
 
-// Initialize Express app
 const app = express();
-
-// Configure Winston logger
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json()
-  ),
-  transports: [
-    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'logs/combined.log' })
-  ]
-});
-
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.simple()
-  }));
-}
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(morgan('dev'));
 
-// Routes
-app.use('/api/bills', require('./routes/billRoutes'));
-app.use('/api/users', require('./routes/userRoutes'));
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  logger.error(`Error: ${err.message}`);
-  res.status(500).json({ message: 'Internal server error' });
+// Health check route
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    message: 'Server is running',
+    mongodb: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected'
+  });
 });
 
+// Routes
+app.use('/', billRoutes);
+
+// Server listen
 const PORT = process.env.PORT || 5000;
+connectDB();
 
 app.listen(PORT, () => {
-  logger.info(`Server running on port ${PORT}`);
-}); 
+  console.log(`Server running on http://localhost:${PORT}`);
+});

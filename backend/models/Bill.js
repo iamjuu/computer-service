@@ -1,40 +1,38 @@
 const mongoose = require('mongoose');
 
 const billSchema = new mongoose.Schema({
-  customerName: {
+  recipientName: {
     type: String,
-    required: [true, 'Customer name is required']
+    required: true,
+    trim: true
   },
-  email: {
-    type: String,
-    required: [true, 'Email is required'],
-    match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
-  },
-  phone: {
-    type: String,
-    required: [true, 'Phone number is required']
-  },
-  serviceType: {
-    type: String,
-    required: [true, 'Service type is required']
-  },
-  description: {
-    type: String,
-    required: [true, 'Description is required']
-  },
-  amount: {
+  total: {
     type: Number,
-    required: [true, 'Amount is required']
+    required: true,
+    min: 0,
+    default: 0
   },
-  status: {
-    type: String,
-    enum: ['pending', 'completed', 'cancelled'],
-    default: 'pending'
-  },
-  createdAt: {
+  spareParts: [{
+    description: {
+      type: String,
+      trim: true
+    },
+    amount: {
+      type: Number,
+      min: 0,
+      default: 0
+    }
+  }],
+  warrantyStarting: {
     type: Date,
-    default: Date.now
+    default: null
+  },
+  warrantyEnding: {
+    type: Date,
+    default: null
   }
+}, {
+  timestamps: true
 });
 
-module.exports = mongoose.model('Bill', billSchema); 
+module.exports = mongoose.model('Bill', billSchema);

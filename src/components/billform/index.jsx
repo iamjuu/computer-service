@@ -29,7 +29,7 @@ const BillForm = ({ billId, phoneNumber = "0321-8082879", isAdmin = false }) => 
     setError(null);
     
     try {
-      const response = await fetch(`/api/bills/${id}`);
+      const response = await fetch(`http://localhost:5000/api/bills/${id}`);
       if (!response.ok) {
         throw new Error(`Failed to fetch bill: ${response.statusText}`);
       }
@@ -92,7 +92,7 @@ const BillForm = ({ billId, phoneNumber = "0321-8082879", isAdmin = false }) => 
         final_amount: billData.finalAmount
       };
 
-      const url = billId ? `/api/bills/${billId}` : '/api/bills';
+      const url = billId ? `http://localhost:5000/api/bills/${billId}` : 'http://localhost:5000/api/bills';
       const method = billId ? 'PUT' : 'POST';
       
       const response = await fetch(url, {

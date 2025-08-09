@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Home from './page/home'
 import BillPage from './page/bill'
 import AdminDashboard from './page/admin'
+import AddBill from './page/admin/AddBill'
 import Login from './page/login'
 
 // Protected Route Component
@@ -30,6 +31,14 @@ function App() {
           element={
             <ProtectedRoute>
               <AdminDashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/admin/add-bill" 
+          element={
+            <ProtectedRoute>
+              <AddBill />
             </ProtectedRoute>
           } 
         />

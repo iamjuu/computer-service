@@ -1,14 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const {
-  getBills,
-  getBill,
-  createBill,
-  updateBill,
-  deleteBill
+  createBill
 } = require('../controllers/billController');
 
-router.route('/').get(getBills).post(createBill);
-router.route('/:id').get(getBill).put(updateBill).delete(deleteBill);
+// Only POST route for creating bills
+router.post('/add-bill', createBill);
 
 module.exports = router; 

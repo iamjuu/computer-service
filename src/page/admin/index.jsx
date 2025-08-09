@@ -1,78 +1,108 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Dashboard from './Dashboard';
+import CreateBill from './CreateBill';
+import Users from './Users';
+import Settings from './settings';
 
 const AdminDashboard = () => {
-  const [totalUsers, setTotalUsers] = useState(0);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
-  // Fetch total users count
-  useEffect(() => {
-    const fetchTotalUsers = async () => {
-      console.log('Fetching total users count...');
-      try {
-        const response = await fetch('/api/users/count');
-        if (!response.ok) {
-          throw new Error('Failed to fetch user count');
-        }
-        const data = await response.json();
-        setTotalUsers(data.count);
-        console.log('Total users fetched:', data.count);
-      } catch (error) {
-        console.error('Error fetching total users:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTotalUsers();
-  }, []);
-
-  const handleCreateBill = () => {
-    console.log('Navigating to bill creation page...');
-    navigate('/bill');
-  };
+  const [activeSection, setActiveSection] = useState('dashboard');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const handleLogout = () => {
     console.log('User logging out from admin panel');
-    localStorage.removeItem('isLoggedIn');
+    // Clear all session storage data
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('userEmail');
+    sessionStorage.removeItem('loginTime');
+    // Or alternatively, clear all session storage: sessionStorage.clear();
     navigate('/');
   };
 
+  const sidebarItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: '📊' },
+    { id: 'create-bill', label: 'Create Bill', icon: '📄' },
+    { id: 'users', label: 'Users', icon: '👥' },
+    { id: 'settings', label: 'Settings', icon: '⚙️' }
+  ];
+
+  const renderContent = () => {
+    switch (activeSection) {
+      case 'dashboard':
+        return <Dashboard />;
+      case 'create-bill':
+        return <CreateBill />;
+      case 'users':
+        return <Users />;
+      case 'settings':
+        return <Settings />;
+      default:
+        return <div>Select a section from the sidebar</div>;
+    }
+  };
+
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
-        <button
-          onClick={handleLogout}
-          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
-        >
-          Logout
-        </button>
+    <div className="flex h-screen bg-gray-100">
+      {/* Sidebar */}
+      <div className={`bg-white shadow-lg transition-all duration-300 ${isSidebarOpen ? 'w-64' : 'w-16'}`}>
+        <div className="p-4">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className={`font-bold text-xl text-gray-800 ${!isSidebarOpen && 'hidden'}`}>
+              Admin Panel
+            </h2>
+            <button
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              {isSidebarOpen ? '◀' : '▶'}
+            </button>
+          </div>
+          
+          <nav className="space-y-2">
+            {sidebarItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveSection(item.id)}
+                className={`w-full flex items-center p-3 rounded-lg transition-colors ${
+                  activeSection === item.id
+                    ? 'bg-red-800 text-white'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <span className="text-xl mr-3">{item.icon}</span>
+                {isSidebarOpen && <span className="font-medium">{item.label}</span>}
+              </button>
+            ))}
+          </nav>
+        </div>
+    
       </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Total Users Card */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-lg font-semibold text-gray-700 mb-2">Total Users</h2>
-          {loading ? (
-            <div className="animate-pulse">
-              <div className="h-8 bg-gray-200 rounded w-24"></div>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <div className="bg-white shadow-sm p-6">
+          <div className="flex justify-between items-center">
+            <h1 className="text-2xl font-bold text-gray-800">
+              {sidebarItems.find(item => item.id === activeSection)?.label || 'Dashboard'}
+            </h1>
+            <div className="flex items-center space-x-4">
+              <span className="text-gray-600">Welcome, Admin</span>
+              <button
+                onClick={handleLogout}
+                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors flex items-center space-x-2"
+              >
+                <span>🚪</span>
+                <span>Logout</span>
+              </button>
             </div>
-          ) : (
-            <p className="text-3xl font-bold text-blue-600">{totalUsers}</p>
-          )}
+          </div>
         </div>
 
-        {/* Create Bill Card */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-lg font-semibold text-gray-700 mb-4">Bill Management</h2>
-          <button
-            onClick={handleCreateBill}
-            className="bg-red-800 text-white px-4 py-2 rounded hover:bg-red-900 transition-colors"
-          >
-            Create New Bill
-          </button>
+        {/* Content Area */}
+        <div className="flex-1 p-6 overflow-auto">
+          {renderContent()}
         </div>
       </div>
     </div>

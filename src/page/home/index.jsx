@@ -127,10 +127,10 @@ const Index = () => {
               </h1>
             </div>
             <div
-              className="w-full sm:w-[70%] flex justify-center items-center p-4 sm:py-0"
+              className="w-full sm:w-[70%]  flex justify-center items-center p-4 sm:py-0"
               data-aos="fade-up"
             >
-              <p className="text-gray-600 text-[18px] p-4">
+              <p className="text-gray-600 text-[18px]  p-4">
                 I offer custom computer builds, high-performance gaming PC
                 setups, and reliable computer repair services, all from the
                 comfort of my home. Whether you need a powerful workstation, a
