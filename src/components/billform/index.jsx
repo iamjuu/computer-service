@@ -34,22 +34,22 @@ const BillForm = ({ billId, phoneNumber , isAdmin = false }) => {
       
       // Transform backend data to component format
       setBillData({
-        customerName: data.customer_name || '',
-        date: data.date || new Date().toISOString().split('T')[0],
-        refNo: data.ref_no || '',
-        invNo: data.invoice_no || '',
-        page: data.page || '',
-        phoneNumber: data.phone_number || phoneNumber,
-        items: data.items?.length > 0 ? data.items.map(item => ({
-          particular: item.particular || '',
-          quantity: item.quantity?.toString() || '',
-          unit: item.unit || '',
-          rate: item.rate?.toString() || '',
-          amount: item.amount?.toString() || ''
+        customerName: data.data?.[0]?.recipientName || '',
+        date: data.data?.[0]?.createdAt ? new Date(data.data[0].createdAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+        refNo: data.data?.[0]?._id || '',
+        invNo: data.data?.[0]?._id?.slice(-6)?.toUpperCase() || '',
+        page: '1',
+        phoneNumber: data.data?.[0]?.customerNumber || phoneNumber,
+        items: data.data?.[0]?.spareParts?.length > 0 ? data.data[0].spareParts.map(item => ({
+          particular: item.description || '',
+          quantity: '1',
+          unit: 'piece',
+          rate: (item.amount / 100).toString(),
+          amount: (item.amount / 100).toString()
         })) : [{ particular: '', quantity: '', unit: '', rate: '', amount: '' }],
-        totalAmount: parseFloat(data.total_amount || 0),
-        discount: parseFloat(data.discount || 0),
-        finalAmount: parseFloat(data.final_amount || 0)
+        totalAmount: parseFloat((data.data?.[0]?.total || 0) / 100),
+        discount: 0,
+        finalAmount: parseFloat((data.data?.[0]?.total || 0) / 100)
       });
       
     } catch (err) {

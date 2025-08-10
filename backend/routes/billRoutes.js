@@ -4,8 +4,8 @@ const {
   createBill,
   getTotalCount,
   getTotalRevenue,
-  getBillByNumber,
   getBillByPhoneNumber,
+  generateInvoice,
   deleteBill
 } = require('../controllers/billController');
 
@@ -22,6 +22,9 @@ router.get('/total-revenue', getTotalRevenue);
 
 // GET route for getting bills by phone number
 router.get('/bill-by-number/:phoneNumber', getBillByPhoneNumber);
+
+// GET route for generating HTML invoice
+router.get('/generate-invoice/:id', generateInvoice);
 
 // DELETE route for deleting a bill by ID
 router.delete('/delete-bill/:id', deleteBill);

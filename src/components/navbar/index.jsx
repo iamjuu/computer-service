@@ -42,11 +42,12 @@ const Navbar = ({ isModalOpen: externalIsModalOpen, setIsModalOpen: externalSetI
         setPhoneNumber("");
         setIsLoading(false);
         
-        // Navigate to bill page with the fetched data
+        // Navigate to bill page with the fetched data and HTML invoices
         navigate('/bill', { 
           state: { 
             phoneNumber,
             bills: response.data.data,
+            htmlInvoices: response.data.htmlInvoices || [],
             admin: false 
           }
         });
